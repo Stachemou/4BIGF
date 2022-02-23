@@ -46,5 +46,3 @@ str(districts)
 library(skimr)
 skim(districts)
 
-
-
