@@ -1,38 +1,18 @@
 library(ggplot2)
-# library(plyr)
-# library(rattle)
-# library(rmr2)
-# library(rhdfs)
-# library(tm)
-# library(snowball)
-# library(wordcloud)
-# library(randomForest)
-
-setwd("D:/VMware/mac/Fichiers-data")
-getwd()
+library(skimr)
+library(readr)
 
 init <- function() {
+  # set direcory
+  if(substr(getwd(),3,14) != "/4BIGF/data"){
+    setwd(paste(getwd(),"data", sep = "/"))
+  }
   # Districts
-  districts <<- read.csv2("districts_info.csv", sep = ",")
-  names(districts) <- c(
-    "district_id",
-    "state",
-    "locale",
-    "pct_black/hispanic",
-    "pct_free/reduced",
-    "county_connections_ratio",
-    "pp_total_raw"
-  )
+  districts <<- read_csv("districts_info.csv")
+
   # Products
-  products <<- read.csv("products_info.csv", sep = ",")
-  names(products) <- c(
-    "LP ID",
-    "URL",
-    "Product Name",
-    "Provider/Company Name",
-    "Sector(s)",
-    "Primary Essential Function"
-  )
+  products <<- read_csv("products_info.csv")
+
   if (exists("products") && is.data.frame(get("products")) &&
       exists("districts") && is.data.frame(get("districts"))) {
     message("Function Ran Successfully")
@@ -41,8 +21,28 @@ init <- function() {
   }
 }
 
-init()
-str(districts)
-library(skimr)
-skim(districts)
+main <- function(){
+  # initialisation
+  init()
+  # column analyse
+  spec(districts)
+  spec(products)
+  
+  # view data
+  View(districts)
+  View(products)
+  
+  # column content analyse
+  skim(districts)
+  skim(products)
+  
+  # analyse on missing values
+  plot_missing(districts, ggtheme = theme_minimal(base_size = 20))
+  plot_missing(products, ggtheme = theme_minimal(base_size = 20))
+}
+
+main()
+
+
+
 
