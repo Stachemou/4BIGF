@@ -1,10 +1,11 @@
 library(ggplot2)
 library(skimr)
 library(readr)
+library(DataExplorer)
 
 init <- function() {
   # set direcory
-  if(substr(getwd(),3,14) != "/4BIGF/data"){
+  if (substr(getwd(),3,14) != "/4BIGF/data") {
     setwd(paste(getwd(),"data", sep = "/"))
   }
   # Districts
@@ -39,6 +40,16 @@ main <- function(){
   # analyse on missing values
   plot_missing(districts, ggtheme = theme_minimal(base_size = 20))
   plot_missing(products, ggtheme = theme_minimal(base_size = 20))
+  
+  #Districts
+  options(repr.plot.height = 6, repr.plot.width = 10)
+  
+  plot_bar(districts, ggtheme = theme_minimal(base_size = 10))
+  
+  #Products
+  options(repr.plot.height = 6, repr.plot.width = 10)
+  
+  plot_bar(products, ggtheme = theme_minimal(base_size = 10))
 }
 
 main()
