@@ -1,9 +1,10 @@
-library(ggplot2)
-library(skimr)
-library(readr)
-library(DataExplorer)
-
 init <- function() {
+  library(ggplot2)
+  library(skimr)
+  library(readr)
+  library(DataExplorer)
+  library(plyr)
+  library(dplyr)
   # set direcory
   if (substr(getwd(),3,14) != "/4BIGF/data") {
     setwd(paste(getwd(),"data", sep = "/"))
@@ -50,10 +51,18 @@ main <- function(){
   options(repr.plot.height = 6, repr.plot.width = 10)
   
   plot_bar(products, ggtheme = theme_minimal(base_size = 10))
+  
+  #engagement
+  list_engagement <- list.files(path = paste(getwd(),"engagement_data", sep ="/"),
+                                recursive = TRUE,
+                                pattern = "\\.csv$",
+                                full.names = TRUE)
+  all_engagement <- read_csv(list)
+  ggplot(data = all_engagement, aes(x = time, y = pct_access )) + geom_bar(stat = "identity")
+  
+  
 }
 
 main()
-
-
 
 
