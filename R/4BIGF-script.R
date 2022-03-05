@@ -17,7 +17,7 @@ init <- function() {
 
   if (exists("products") && is.data.frame(get("products")) &&
       exists("districts") && is.data.frame(get("districts"))) {
-    message("Function Ran Successfully")
+    message("Function Run Successfully")
   } else {
     stop("Initialisation problem")
   }
@@ -44,25 +44,48 @@ main <- function(){
   
   #Districts
   options(repr.plot.height = 6, repr.plot.width = 10)
-  
   plot_bar(districts, ggtheme = theme_minimal(base_size = 10))
   
   #Products
   options(repr.plot.height = 6, repr.plot.width = 10)
-  
   plot_bar(products, ggtheme = theme_minimal(base_size = 10))
   
   #engagement
-  list_engagement <- list.files(path = paste(getwd(),"engagement_data", sep ="/"),
-                                recursive = TRUE,
-                                pattern = "\\.csv$",
-                                full.names = TRUE)
-  all_engagement <- read_csv(list)
-  ggplot(data = all_engagement, aes(x = time, y = pct_access )) + geom_bar(stat = "identity")
+  #list_engagement <- list.files(path = paste(getwd(),"engagement_data", sep = "/"),
+  #                             recursive = TRUE,
+  #                              pattern = "\\.csv$",
+  #                              full.names = TRUE)
+  #all_engagement <- read_csv(list_engagement)
+  #ggplot(data = all_engagement, aes(x = time, y = pct_access )) + geom_bar(stat = "identity")
   
+  new_category <- substr(products$`Primary Essential Function`, 1, 3)
+  new_category[new_category == "LC/"] <- "LC/CM/SDO"
+  products$category <- new_category
+  ggplot(data = products, aes(x = "", y = category, fill = category)) + geom_bar(stat = "identity") + coord_polar("y") +theme_void()
   
 }
 
 main()
+
+
+
+
+id_list <- districts$district_id
+# for each in id_list
+for (i in id_list){
+  file <- c(i, ".csv$")
+  list_id_file <- list.files(path = paste(getwd(),"engagement_data", sep = "/"),
+                             recursive = TRUE,
+                             pattern = file,
+                             full.names = TRUE)
+  new_tabl <- read_csv(list_id_file)
+  new_tabl$district_id <- i
+  if (exists("tabl") && is.data.frame(get("tabl"))) {
+    tabl <- rbind(tabl, new_tabl)
+  } else {
+    tabl <- new_tabl
+  }
+}
+View(tabl)
 
 
