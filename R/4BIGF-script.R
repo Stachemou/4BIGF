@@ -86,6 +86,11 @@ for (i in id_list){
     tabl <- new_tabl
   }
 }
+
 View(tabl)
+print(tabl$district_id)
+bl <- tabl[tabl$district_id == 8815,]
+bl
+tabl$pct_access <- tabl$pct_access*10
 
-
+ggplot(data = bl, aes(x = time, y = mean(pct_access/10))) + geom_bar(stat = "identity")
