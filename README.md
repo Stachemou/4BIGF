@@ -1,5 +1,4 @@
 # 4BIGF
+Ouvrire le fichier "4BIGF.proj" dans Rstudio
 
-lint:
-
-lintr::lint("4BIGF-script.R")
+Lancer le script "4BIGF-script.R"
